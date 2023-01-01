@@ -11,6 +11,24 @@
             </a>
         </div>
     {% else %}
+        {% if page.toc %}
+            <ul>
+            {% for h1 in page.toc %}
+                <li>
+                    <a href="{{ h1.permalink | safe }}">{{ h1.title }}</a>
+                    {% if h1.children %}
+                        <ul>
+                            {% for h2 in h1.children %}
+                                <li>
+                                    <a href="{{ h2.permalink | safe }}">{{ h2.title }}</a>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                </li>
+            {% endfor %}
+            </ul>
+        {% endif %}
         <div class="post-content">
             {{ page.content | safe }}
         </div>
@@ -70,9 +88,6 @@
 {% macro list_posts(pages) %}
     <ul>
     {%- for page in pages %}
-        {%- if page.draft %}
-            {% continue %}
-        {% endif -%}
         <li class="post-list">
             <a href="{{ page.permalink | safe }}">
                 <span class="post-date">{{ page.date }}</span>
